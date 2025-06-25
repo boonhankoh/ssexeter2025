@@ -31,6 +31,10 @@ class Subsession(BaseSubsession):
             lookup[letter] = self.lookup_table.index(letter)
         return lookup
 
+    @property
+    def correct_response(self):
+        return [self.lookup_dict[letter] for letter in self.word]
+
 
 class Group(BaseGroup):
     pass
@@ -41,14 +45,15 @@ class Player(BasePlayer):
     response_2 = models.IntegerField()
     is_correct = models.BooleanField()
 
+    @property
+    def response(self):
+        return [self.response_1, self.response_2]
+
     def check_response(self):
-        self.is_correct = (
-                self.response_1 == self.subsession.lookup_dict[self.subsession.word[0]]
-                and
-                self.response_2 == self.subsession.lookup_dict[self.subsession.word[1]]
-        )
+        self.is_correct = self.response == self.subsession.correct_response
         if self.is_correct:
             self.payoff = self.subsession.payment_per_correct
+
 
 def creating_session(subsession):
     subsession.setup_round()
