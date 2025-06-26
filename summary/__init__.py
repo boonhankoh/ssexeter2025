@@ -19,7 +19,8 @@ class Subsession(BaseSubsession):
     def collect_results(self):
         for player in self.get_players():
             player.earnings_contest = sum(
-                p.payoff for p in contest.Player.objects_filter(participant=player.participant)
+                p.payoff for p in contest.Player.objects_filter(participant=player.participant,
+                                                                round_number=1)
             )
             player.earnings_encryption = sum(
                 p.payoff for p in encryption.Player.objects_filter(participant=player.participant)
