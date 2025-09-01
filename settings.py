@@ -1,5 +1,5 @@
 from os import environ
-
+# Test
 SESSION_CONFIGS = [
     dict(
         name="splash_demo",
